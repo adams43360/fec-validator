@@ -1,0 +1,26 @@
+JournalCode	JournalLib	EcritureNum	EcritureDate	CompteNum	CompteLib	CompAuxNum	CompAuxLib	PieceRef	PieceDate	EcritureLib	Debit	Credit	EcritureLet	DateLet	ValidDate	Montantdevise	Idevise
+ACH	Achats fournisseurs	1	20240103	401100	Fournisseurs	F001	Dupont Fournitures	FA-2024-001	20240103	Achat fournitures bureau	0.00	1200.00					
+ACH	Achats fournisseurs	1	20240103	606100	Fournitures de bureau			FA-2024-001	20240103	Achat fournitures bureau	1000.00	0.00					
+ACH	Achats fournisseurs	1	20240103	445660	TVA déductible sur ABS			FA-2024-001	20240103	TVA sur fournitures	200.00	0.00					
+VTE	Ventes clients	2	20240110	411100	Clients	C001	Martin Consulting	FC-2024-001	20240110	Prestation conseil janvier	2400.00	0.00					
+VTE	Ventes clients	2	20240110	706100	Prestations de services			FC-2024-001	20240110	Prestation conseil janvier	0.00	2000.00					
+VTE	Ventes clients	2	20240110	445710	TVA collectée			FC-2024-001	20240110	TVA facturée client	0.00	400.00					
+BQ	Banque	3	20240115	512000	Banque CIC			VIR-2024-001	20240115	Virement client Martin	2400.00	0.00					
+BQ	Banque	3	20240115	411100	Clients	C001	Martin Consulting	VIR-2024-001	20240115	Règlement facture FC-2024-001	0.00	2400.00	A	20240115			
+VTE	Ventes clients	4	20240120	411100	Clients	C002	Leroy et Associés	FC-2024-002	20240120	Prestation audit janvier	3600.00	0.00					
+VTE	Ventes clients	4	20240120	706100	Prestations de services			FC-2024-002	20240120	Prestation audit janvier	0.00	3000.00					
+VTE	Ventes clients	4	20240120	445710	TVA collectée			FC-2024-002	20240120	TVA facturée client	0.00	600.00					
+ACH	Achats fournisseurs	5	20240125	401100	Fournisseurs	F002	Telecom Pro	FA-2024-002	20240125	Abonnement téléphonie	0.00	240.00					
+ACH	Achats fournisseurs	5	20240125	626000	Frais postaux et télécom			FA-2024-002	20240125	Abonnement téléphonie	200.00	0.00					
+ACH	Achats fournisseurs	5	20240125	445660	TVA déductible sur ABS			FA-2024-002	20240125	TVA téléphonie	40.00	0.00					
+BQ	Banque	6	20240131	512000	Banque CIC			VIR-2024-002	20240131	Virement client Leroy	3600.00	0.00					
+BQ	Banque	6	20240131	411100	Clients	C002	Leroy et Associés	VIR-2024-002	20240131	Règlement facture FC-2024-002	0.00	3600.00	B	20240131			
+OD	Opérations diverses	7	20240131	641000	Rémunérations du personnel			PAIE-2024-01	20240131	Salaires janvier 2024	4500.00	0.00					
+OD	Opérations diverses	7	20240131	431000	Sécurité sociale			PAIE-2024-01	20240131	Cotisations sociales jan	0.00	1800.00					
+OD	Opérations diverses	7	20240131	421000	Personnel - rémunérations dues			PAIE-2024-01	20240131	Net à payer janvier	0.00	2700.00					
+BQ	Banque	8	20240201	421000	Personnel - rémunérations dues			VIR-SAL-01	20240201	Paiement salaires janvier	2700.00	0.00					
+BQ	Banque	8	20240201	512000	Banque CIC			VIR-SAL-01	20240201	Paiement salaires janvier	0.00	2700.00					
+OD	Opérations diverses	9	20240229	681100	Dotations amortissements			OD-2024-001	20240229	Amortissement matériel info	125.00	0.00					
+OD	Opérations diverses	9	20240229	281500	Amortissements matériel info			OD-2024-001	20240229	Amortissement matériel info	0.00	125.00					
+ACH	Achats fournisseurs	10	20240315	607000	Achats de marchandises			FA-2024-010	20240315	Achat matières en EUR	800.00	0.00					
+ACH	Achats fournisseurs	10	20240315	401100	Fournisseurs	F004	Import Express	FA-2024-010	20240315	Dette fournisseur	0.00	800.00					

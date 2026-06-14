@@ -1,0 +1,27 @@
+# Fichiers générés par le validateur
+fec_corrige.txt
+rapport_corrections_*.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+.env/
+env/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
