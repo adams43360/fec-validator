@@ -4,8 +4,8 @@
 validate_fec.py — Outil de validation et correction de fichiers FEC
 Fichier des Ecritures Comptables (Article A. 47 A-1 du Livre des procedures fiscales)
 
-Version : 1.00
-Date    : 2024-06-08
+Version : 1.01
+Date    : 2024-06-14
 Auteur  : Damien Ruiz
 
 Usage :
@@ -25,7 +25,7 @@ Controles implementes (V1.00) :
     DEVISE_INCOMPLETE - Montantdevise et Idevise doivent etre renseignes ensemble
 """
 
-__version__ = "1.00"
+__version__ = "1.01"
 
 import sys
 import os
@@ -763,57 +763,76 @@ def generer_rapport_pdf(
     if erreurs:
         pdf.titre_section("3. Détail des anomalies détectées")
 
+        LARGEUR_UTILE = 190  # mm disponibles entre marges (210 - 2x10)
+
         for i, erreur in enumerate(erreurs, 1):
-            if pdf.get_y() > 255:  # Saut de page si nécessaire
+            # Estimation hauteur minimale de la carte : saut de page préventif
+            if pdf.get_y() > 248:
                 pdf.add_page()
 
-            # Couleur selon statut de correction
+            # ── Statut et couleur ────────────────────────────────────────────
             if erreur.corrigee:
                 couleur_statut = COULEUR_OK
-                statut_txt = "CORRIGÉE"
+                statut_txt = "CORRIGEE"
             elif erreur.valeur_corrigee is not None:
                 couleur_statut = COULEUR_AVERTISSEMENT
-                statut_txt = "REFUSÉE"
+                statut_txt = "REFUSEE"
             else:
                 couleur_statut = (120, 120, 120)
                 statut_txt = "MANUELLE"
 
-            # Numéro et code d'erreur
+            # ── Ligne 1 : badge numéro | code (large) | badge statut ─────────
+            # Largeurs : numéro=14  code=reste  statut=32  → code prend tout l'espace
+            W_NUM    = 14
+            W_STATUT = 32
+            W_CODE   = LARGEUR_UTILE - W_NUM - W_STATUT  # ~144 mm — jamais tronqué
+
             pdf.set_fill_color(*couleur_statut)
             pdf.set_text_color(255, 255, 255)
             pdf.set_font("Helvetica", "B", 8)
-            pdf.cell(10, 5.5, f"#{i:02d}", fill=True, align="C")
-            pdf.set_fill_color(240, 243, 250)
+            pdf.cell(W_NUM, 6, f"#{i:02d}", fill=True, align="C")
+
+            pdf.set_fill_color(235, 239, 252)
             pdf.set_text_color(*COULEUR_TITRE)
-            pdf.cell(30, 5.5, erreur.code, fill=True)
-            pdf.set_text_color(80, 80, 80)
-            pdf.set_font("Helvetica", "", 8)
-            ligne_txt = f"Ligne {erreur.ligne}" if erreur.ligne > 0 else "Global"
-            pdf.cell(25, 5.5, ligne_txt, fill=True)
-            pdf.cell(25, 5.5, f"Champ : {erreur.champ}", fill=True)
+            pdf.set_font("Helvetica", "B", 8)
+            pdf.cell(W_CODE, 6, f"  {erreur.code}", fill=True)
+
             pdf.set_fill_color(*couleur_statut)
             pdf.set_text_color(255, 255, 255)
             pdf.set_font("Helvetica", "B", 7)
-            pdf.cell(25, 5.5, statut_txt, fill=True, align="C")
-            pdf.ln(5.5)
+            pdf.cell(W_STATUT, 6, statut_txt, fill=True, align="C")
+            pdf.ln(6)
 
-            # Description
+            # ── Ligne 2 : localisation (ligne + champ) sur fond très clair ──
+            ligne_txt = f"Ligne {erreur.ligne}" if erreur.ligne > 0 else "Global"
+            champ_txt = f"Champ : {erreur.champ}"
+            meta_txt  = f"  {ligne_txt}   |   {champ_txt}"
+
+            pdf.set_fill_color(245, 246, 250)
+            pdf.set_text_color(100, 110, 140)
+            pdf.set_font("Helvetica", "I", 7.5)
+            pdf.cell(LARGEUR_UTILE, 5, meta_txt, fill=True, border="LR")
+            pdf.ln(5)
+
+            # ── Ligne 3 : description ────────────────────────────────────────
             pdf.set_fill_color(250, 251, 255)
             pdf.set_text_color(50, 50, 50)
             pdf.set_font("Helvetica", "", 8)
             pdf.set_x(10)
-            pdf.multi_cell(0, 4.5, f"  {erreur.description}", fill=True, border="LRB")
+            pdf.multi_cell(LARGEUR_UTILE, 4.5, f"  {erreur.description}",
+                           fill=True, border="LRB")
 
-            # Correction appliquée
+            # ── Ligne 4 : correction appliquée (si acceptée) ─────────────────
             if erreur.corrigee and erreur.valeur_corrigee is not None:
                 pdf.set_x(10)
-                pdf.set_fill_color(235, 248, 238)
+                pdf.set_fill_color(232, 248, 236)
                 pdf.set_text_color(*COULEUR_OK)
-                pdf.set_font("Helvetica", "I", 8)
-                pdf.cell(0, 4.5, f"  ✓ Valeur remplacée par : «{erreur.valeur_corrigee}»",
-                         fill=True, ln=True)
+                pdf.set_font("Helvetica", "B", 7.5)
+                pdf.cell(LARGEUR_UTILE, 5,
+                         f"  [OK] Valeur remplacee par : \"{erreur.valeur_corrigee}\"",
+                         fill=True, border="LRB", ln=True)
 
-            pdf.ln(2)
+            pdf.ln(3)
 
     # ── Conclusion ──────────────────────────────────────────────────────────
     pdf.titre_section("4. Conclusion et recommandations")

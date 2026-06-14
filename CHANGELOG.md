@@ -6,6 +6,23 @@ Format : `[VERSION] - YYYY-MM-DD`
 
 ---
 
+## [1.01] - 2024-06-14
+
+### Correctif — Rapport PDF : troncature des textes dans la section détail
+
+**Problème :** Dans la section « 3. Détail des anomalies détectées » du rapport PDF, la ligne
+d'en-tête de chaque carte d'erreur était composée de 5 cellules à largeur fixe totalisant 115 mm
+sur les 190 mm utiles de la page. Les valeurs longues (`SEQUENCE_RUPTURE`, `EcritureDate`,
+`Debit/Credit`, etc.) étaient tronquées et chevauchaient visuellement le badge de statut.
+
+**Correction :** Refonte de la mise en page des cartes d'anomalie en deux lignes distinctes :
+- **Ligne 1** : badge numéro (14 mm) + code d'erreur sur toute la largeur restante (~144 mm) + badge statut (32 mm) — le code ne peut plus jamais être tronqué.
+- **Ligne 2** : localisation (numéro de ligne + champ concerné) sur fond grisé clair, police italique 7,5 pt.
+- **Ligne 3** : description complète (multi_cell, retour à la ligne automatique).
+- **Ligne 4** : confirmation de correction (si acceptée), fond vert pâle.
+
+---
+
 ## [1.00] - 2024-06-08
 
 ### Première version publique
